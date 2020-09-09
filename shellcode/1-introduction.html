@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                     <div class="page-section">
-                         <p> Aliquam idnisi consectetur auctor libero sagittis, tempor elituspendisse sit amet justo pulvinar eleifend nulla Praesent vel aliquet urnaauris molestie sollicitudin nisl non volutpatm mollis eros lacusac lorem tristique arcu facilisisquislacinia eratn lacinia nisidapibus justo viverrasit amet sodales risus lorem ipusm dfolor sit ulter lacina egeasrte noultriciesullam egestas egestaante non semper enimc facilisis auguenetus et malesuada lorem ipusm dolor sit famese gestas. </p>
+                         <p>We define Shellcode as “a set of instructions injected and then executed by an exploited program” [1]. Typically when a binary exploit or a piece of malware is deployed against a target a piece of code is run on the system which gives the attacker access to the computer system or aids the attacker in some way. This section of the website focuses on the process of writing Shellcode that can be used during exploitation of vulnerable systems.</p>
                     </div>
                 </div>
             </div>
@@ -99,12 +99,20 @@
 
                                     </div>
                                     <!-- /.post header -->
-                                    <p>Nunc cursus leo risus non ac efficitur vel sed Mauris iaculis finibus ex et viverra. Aliquam blandit ornare justo, in sagittis sem ornare sit amet. Cras posuere vel ex at vulputate. Praesent volutpat consequat urt sagitton dimentum ditpat vivamus auctor magna eu vel</p>
-                                    <img src="images/left-image.jpg" alt="" class="alignleft">
-                                    <p class="mb60"> Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Aliquam idnisi consectetur auctor libero sagittis, tempor elituspendisse sit amet justo pulvinar eleifend nulla quislacinia eratn lacinia nisidapibus </p>
-                                    <img src="images/right-image.jpg" alt="" class="alignright">
-                                    <p> Aliquam idnisi consectetur auctor libero sagittis, tempor elituspendisse sit amet justo pulvinar eleifend nulla Praesent vel aliquet urnaauris molestie sollicitudin nisl non volutpatm mollis eros lacusac lorem tristique arcu facilisisquislacinia eratn lacinia nisidapibus justo viverrasit amet sodales risus lorem ipusm dfolor sit ulter lacina egeasrte noultriciesullam egestas egestaante non semper enimc facilisis auguenetus et malesuada lorem ipusm dolor sit famese gestas. </p>
-                                    <p>Praesent vel aliquet urnaauris molestie sollicitudin nisl non volutpatm mollis eros lacusac lorem tristique arcu facilisis r elituspendisse sit amet justo pulvinar eleifend nulla quis semper enimc facilisis sedamus ullamcorper accumsan augue quis egestas.</p>
+                                    <p>We will primarily be looking at Shellcode used by an attacker during binary exploitation. Binary exploits rely on injecting code into the memory of a program and forcing the program to execute this code. Since the CPU can only understand and execute machine instructions. For this reason, we will have to work in the same domain and write out Shellcode in assembly. For this reason, we recommend a good familiarity with C and Assembly for this section. You can find good introductions to each at <a href="https://www.tutorialspoint.com/cprogramming/">https://www.tutorialspoint.com/cprogramming/</a> and <a href="https://www.tutorialspoint.com/assembly_programming/index.htm">https://www.tutorialspoint.com/assembly_programming/index.htm</a> respectively.</p>
+                                   
+                                    <p> Writing Shellcode goes through 5 main stages: [2]</p>
+                                    <p style="padding-left: 40px">1) Write desired Shellcode in a high-level programming language, usually C. This could be code that will add a new user to the machine or spawn a shell for the attacker to interact with.<br>
+2) Compile and then disassemble the high-level shellcode program. <br>
+3) Analyse and understand how the program works on the assembly level.<br> 
+4) Clean up the assembly to make it smaller and injectable. From an exploit development perspective, we need to identify bad characters that are either ignored by the target program or terminate the buffer supplied as user input. It is essential that our Shellcode does not include any of these bad characters otherwise our exploit will fail. In particular, our Shellcode cannot contain any null bytes (\x00) as these will terminate the buffer early. <br>
+5) Extract opcodes and create Shellcode.  </p>
+                                    <p>In this section, we will discuss different types of Shellcode and how they can be written. We will work on a variety of different operating systems starting with x86 Linux and moving toward Windows. </p>
+
+                                    <p>References:<br>
+                                    [1] <a href=" https://www.exploit-db.com/docs/english/13019-shell-code-for-beginners.pdf"> https://www.exploit-db.com/docs/english/13019-shell-code-for-beginners.pdf</a><br>
+                                    [2] The Shellcode Hacker's Handbook, Discovering and Exploiting Security Holes<br>
+                                    </p>
                                     <!-- <div class="related-post-block">
                                         
                                         <div class="row">
@@ -180,24 +188,6 @@ to fight hpylori</a></h4>
                             <!-- /.post holder -->
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                  
-                    
-                    <!-- widget-defintions-start -->
-                    <div class=" widget widget-categories">
-                        <h2 class="widget-title">Key Terms</h2>
-                        <p class="mb60"> Term: Definition </p>
-                    </div>
-                    <!-- widget-definiton-close -->
-                    <br><br><br>
-                    <div class=" widget widget-categories">
-                        <h2 class="widget-title">Key Terms</h2>
-                        <p class="mb60"> Term: Definition </p>
-                    </div>
-                    <!-- widget-definiton-close -->
-                   
-                    
                 </div>
             </div>
         </div>
