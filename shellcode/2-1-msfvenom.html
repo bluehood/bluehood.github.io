@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>BlueHood - Cyber Security Learning</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Style CSS -->
+    <link href="../css/styles.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/fontello.css">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="header-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <a href="index.html"><img src="../images/logo2.png" alt="" style="width:75px;height:75px;" class="alignright"></a>
+                </div>
+                <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+                    <div class="navigation">
+                        <div id="navigation">
+                            <ul>
+                                <li class="active"><a href="../index.html" title="Home">Home</a></li>
+                                <li class="active"><a href="../pentesting.html" title="Penetration Testing">Penetration Testing</a></li>
+                                <li class="active"><a href="../exploitdev.html" title="Exploit Development">Exploit Development</a></li>
+                                <li class="active"><a href="../malware.html" title="Malware">Malware</a></li>
+                                <li class="active"><a href="../shellcode.html" title="Shellcode">Shellcode</a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 hidden-md hidden-sm hidden-xs">
+                    <div class="header-btn"><a href="#" class="btn btn-header">get started</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header-section close -->
+    <!-- page-header-start -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="page-section">
+                        <h1 class="page-title ">Shellcode</h1>
+                        <h3 class="page-title ">2.1 Msfvenom</h1>
+                        <div class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li><a href="../exploitdev.html">Shellcode</a></li>
+                                <li>2. MSFVENOM AND SHELLCODE GENERATION</li>
+                                <li>2.1 Msfvenom</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                    <div class="page-section">
+                         <p>Before we write our own Shellcode we will look at a great tool that will generate Shellcode for us.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-header-close -->
+    <div class="space-medium">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <div class="post-block">
+                                <!-- post holder -->
+                                <div class="post-img">
+                                    <!-- post img -->
+                                    <a href="#" class="imghover"><img src="images/post-img-1.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                                <!-- /.post img -->
+                                <div class="post-content">
+                                    <!-- post content -->
+                                    <div class="post-header">
+
+                                    </div>
+                                    <!-- /.post header -->
+                                    <p style="color: red;">All the content on this website, including this post, is intended for educational use only. The techniques and processes presented should only be used against systems you own or have explicit written permission to target. Otherwise, you are breaking the Law - be smart. The author/s of this website will not accept any liability for misuse of this content.</p>
+
+                                    <img src="./images/2-1-meme.png" style="display:block; margin-right: auto; margin-left: auto;">
+                                    <br><br>
+                                    <h2> Metasploit </h2>
+                                    <p>The Metasploit Framework is a “tool for developing and executing exploit code against a remote target.” [1] The tool is used by penetration testers and security professionals to find and exploit vulnerabilities in a system.</p>
+                                    <p>Metasploit can use the meterpreter payload which leverages DLL injection to avoid writing to the disk of the compromised machine. This greatly reduces the chance of being caught by antivirus. Meterpreter makes post-exploitation far easier, with the ability to upload and download files, scan for other vulnerabilities and gain persistence on the target system. </p>
+                                    <p>Msfvenom is a command line tool (part of Metasploit) that generates Shellcode. There are several options and different types of Shellcode that we can generate and that's what we will be looking at in this post. </p>
+
+                                    <h2> Msfvenom </h2>
+                                    <p>We will be working on Kali Linux for this tutorial - Metasploit is pre-installed on Kali. You can download Kali from <a href="https://www.kali.org/downloads/">https://www.kali.org/downloads/</a> if you want to follow along. </p>
+                                    <p>Let's look at the available payloads supported by Msfvenom. </p>
+                                    <pre>root@kali:~# msfvenom -l payloads
+
+Framework Payloads (546 total) [--payload <value>]
+==================================================
+
+ Name Description
+ ---- -----------
+ aix/ppc/shell_bind_tcp Listen for a connection and spawn a command shell
+ aix/ppc/shell_find_port Spawn a shell on an established connection
+ aix/ppc/shell_interact Simply execve /bin/sh (for inetd programs)
+ aix/ppc/shell_reverse_tcp Connect back to attacker 
+
+ ...
+</pre>
+                                    <p>As you can see there are many payloads avaliable, 546 in fact. Many of the payload types are specific to a single operating system or architecture. We'll list some of the most useful payloads: </p>
+                                    <p style="padding-left: 40px">linux/x64/meterpreter/reverse_tcp<br>
+linux/x64/meterpreter_reverse_http<br>
+linux/meterpreter/reverse_tcp<br>
+linux/meterpreter_reverse_http<br>
+windows/meterpreter/reverse_tcp<br>
+windows/meterpreter_reverse_tcp</p>
+                                    <p></p>
+                                    <p></p>
+                                    <p></p>
+
+                                    
+
+
+                                    <h3>References:</h3>
+                                    <p>Liveoverflow, ret2libc <a href="https://www.youtube.com/watch?v=m17mV24TgwY">https://www.youtube.com/watch?v=m17mV24TgwY</a><br>
+                                    Buffer Overflows, ret2libc exploitation examples <a href="https://bufferoverflows.net/ret2libc-exploitation-example/">https://bufferoverflows.net/ret2libc-exploitation-example/</a><br>
+                                    S El-Sherei, elsherei.com <a href="https://www.exploit-db.com/docs/english/28553-linux-classic-return-to-libc-&-return-to-libc-chaining-tutorial.pdf">https://www.exploit-db.com/docs/english/28553-linux-classic-return-to-libc-&-return-to-libc-chaining-tutorial.pdf</a></p>
+
+                                    
+                                    <!--<img src="images/left-image.jpg" alt="" class="alignleft"> -->
+                                    
+                                    <!-- <div class="related-post-block">
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-md-12 col-sm-12">
+                                                <h3 class="related-post-title">Recommended Posts</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                <div class="related-post">
+                                                    
+                                                    <div class="related-img">
+                                                        <a href="#" class="imghover"><img src="images/related-post-2.jpg" alt="" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="related-post-content">
+                                                        <h4 class="related-title"><a href="#" class="title">Drinking water dilutes 
+stomach acid</a></h4>
+                                                        <div class="meta"><span class="meta-categories">in <a href="#" class="">"diet tips"</a> </span></div>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                <div class="related-post">
+                                                    
+                                                    <div class="related-img">
+                                                        <a href="#" class="imghover"><img src="images/related-post-1.jpg" alt="" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="related-post-content">
+                                                        <h4 class="related-title"><a href="#" class="title">Top 5 natural therapies
+to fight hpylori</a></h4>
+                                                        <div class="meta"><span class="meta-categories">in <a href="#" class="">"health care</a> </span></div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <!-- /.related post block -->
+                                    <div class="post-navigation">
+                                        <!-- post navigation -->
+                                        <div class="row">
+                                            <div class="nav-links">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="nav-previous">
+                                                        <!-- nav previous -->
+                                                        <a href="#" class="prev-link">previous post</a>
+                                                        <div class="previous-next-title">
+                                                            <h5><a href="#" class="title"></a></h5>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /. nav previous -->
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="nav-next text-right">
+                                                        <!-- nav next -->
+                                                        <a href="#" class="next-link">next post</a>
+                                                        <div class="previous-next-title">
+                                                            <h5><a href="#" class="title"></a></h5>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.nav previous -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /. post navigation -->
+                                    
+                                    
+                                </div>
+                                <!-- /.post content -->
+                            </div>
+                            <!-- /.post holder -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                  
+                    <!-- widget-definiton-close -->
+                    <!-- widget-definiton-close -->
+                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer start -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- footer-about-start -->
+                
+                <!-- footer-useful links-start -->
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="footer-widget">
+                        <h3 class="footer-title">Quick Links</h3>
+                        <ul class="angle angle-right">
+                            <li><a href="#">Home </a></li>
+                            <li><a href="#">Penetration Testing </a></li>
+                            <li><a href="#">Exploit Development</a></li>
+                            <li><a href="#">Malware</a></li>
+                            <li> <a href="#">Shellcode</a></li>
+                            <li> <a href="#">All Topics</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                 
+                <img src="../images/logo3.png" alt="" class="alignright"></a>
+                      
+                <!-- footer-useful links-close -->
+                <!-- footer-form-start -->
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    
+                </div>
+                <!-- footer-tiny-text-start -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="tiny-footer">
+                        <p>© 2020 - BlueHood. All Rights Reserved.</p>
+                        <p> See https://easetemplate.com for the Website Template and Other Templates </p>
+                    </div>
+                </div>
+                <!-- footer-tiny-text-start -->
+                <!-- footer-form-close -->
+            </div>
+        </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js" type="text/javascript"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../js/navigation.js" type="text/javascript"></script>
+    <script src="../js/menumaker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.sticky.js"></script>
+    <script type="text/javascript" src="../js/sticky-header.js"></script>
+</body>
+
+</html>
