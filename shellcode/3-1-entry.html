@@ -103,7 +103,12 @@
                                     <p style="color: red;">All the content on this website, including this post, is intended for educational use only. The techniques and processes presented should only be used against systems you own or have explicit written permission to target. Otherwise, you are breaking the Law - be smart. The author/s of this website will not accept any liability for misuse of this content.</p>
                                     <br>
                                     <img src="./images/3-1-meme.png" alt="" class="img-responsive" style="display:block; margin-right: auto; margin-left: auto;"></a><br><br>
-                                    <p>Whilst writing this Shellcode we will refer to the steps outlined in <a href="https://bluehood.github.io/exploitdev/1-introduction.html">1. Introduction.</a></p>
+                                    <p>Whilst writing this Shellcode we will refer to the steps outlined in <a href="https://bluehood.github.io/exploitdev/1-introduction.html">1. Introduction.</a> Before we begin let's have a look at syscalls in x86 Linux.</p>
+
+                                    <h2> Linux Syscalls </h2>
+                                    <p>System Calls provide an interface between the application and the Linux kernel. Abbreviated syscalls, they allow a program to pass execution to kernel space. The kernel will then perform some task on behalf of the program. </p>
+                                    <p>For example, when you want to do some sort of Input/Output from your program, such as print something to the screen, a syscall is made to achieve this. Syscalls are made by issuing the interrupt ('int 0x80') command in assembly. This will stop the program from executing and the kernel will run the syscall. Once completed execution will be passed back to the program.</p>
+                                    <p>When a syscall is made one or more arguments need to be loaded into various registers. Each syscall is labelled by a number - a list can be found here http://shell-storm.org/shellcode/files/syscalls.html. The number of the syscall is always loaded into EAX. Variables passed to the syscall are loaded into EBX, EXC, EDX, etc as four-byte integers or pointers to the value of the argument (e.g. a location on the Stack). The syscall is made using int 0x80.</p>
 
                                     <h2>Step 1: Writing the ‘Shellcode’ in C </h2>
                                     <p>This is perhaps the most technical and difficult bit of programming I've ever done so be warned. Just kidding! Writing a program that immediately exits is trivial. We will use the exit() syscall in main to immediately terminate the program. </p>
@@ -157,7 +162,7 @@ _start:
     mov eax,1
     mov ebx,0
     int 0x80</pre>
-                                    <p>Instead of taking the value 0x0 off the Stack, we have specified the value 0x0 in the code directly. Otherwise, all the commands are the same. Our arguments will be loaded into the appropriate registers and the syscall will be made, transferring execution from user space to kernel space. This will terminate the program. </p>
+                                    <p>Instead of taking the value 0x0 off the Stack, we have specified the value 0x0 in the code directly. Otherwise, all the commands are the same. The program moves a value of 0x1 into eax (the value of the exit syscall) and a value of 0x0 into ebx. Our arguments have been loaded into the appropriate registers and the syscall will be made, transferring execution from user space to kernel space. This will terminate the program.</p>
                                     <p>Let's compile the program and verify this is the case.</p>
                                     <pre>debug@lbuntu:~/Documents/shellcode/chapter3$ nasm -f elf exit_shellcode.asm 
 debug@lbuntu:~/Documents/shellcode/chapter3$ ld -o exit_shellcode exit_shellcode.o
