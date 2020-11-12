@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://bluehood.github.io/</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/index.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/pentesting.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/malware.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/topics.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/walkthroughs.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode/3-2-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode/3-1-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode/2-1-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/pentesting/1-introduction.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/pentesting/chapter2.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/pentesting/chapter3.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/1-introduction.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/chapter2.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/chapter3.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/malware/1-introduction.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/malware/chapter2.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/malware/chapter3.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode/1-introduction.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode/chapter2.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/shellcode/chapter3.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/walkthroughs/1-shelldread_1.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/2-3-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/2-4-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/2-1-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/2-2-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bluehood.github.io/exploitdev/2-5-entry.html</loc>
+  <lastmod>2020-09-23T19:41:26+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>
